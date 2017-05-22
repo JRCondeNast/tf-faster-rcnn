@@ -42,14 +42,20 @@ def vis_detections(im_file,im, class_name, dets, thresh=0.5):
     """Draw detected bounding boxes."""
     inds = np.where(dets[:, -1] >= thresh)[0]
     if len(inds) == 0:
-        return
+       return
+    dets = dets[inds,:]
+    print(dets)
+    inds = [dets[:,-1].argmax()]
+    print(inds)
 
     im = im[:, :, (2, 1, 0)]
     fig, ax = plt.subplots(figsize=(12, 12))
     ax.imshow(im, aspect='equal')
     for i in inds:
         bbox = dets[i, :4]
+        print(bbox)
         score = dets[i, -1]
+        print(score)
         
         ax.add_patch(
             plt.Rectangle((bbox[0], bbox[1]),
