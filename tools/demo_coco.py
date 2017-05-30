@@ -14,6 +14,7 @@ See README.md for installation instructions before running.
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
+import os
 
 import _init_paths
 from model.config import cfg
@@ -132,7 +133,19 @@ def demo(sess, net, image_name):
           plt.axis('off')
           plt.tight_layout()
           plt.draw()
-          plt.savefig(save_name + 'res.jpg')
+          #plt.savefig(save_name + 'res.jpg')
+    temp_dir = save_name.rsplit('/',1)
+    save_dir = temp_dir[0] + '/res/'
+    print('temp_dir is : %s' %(temp_dir))
+    print('save_dir is : %s' %(save_dir))
+    save_name = temp_dir[1].split('.jpg')[0]
+    print(save_name)
+    if os.path.exists(save_dir):
+         plt.savefig(save_dir + save_name + '_res.jpg')
+    else:
+         os.mkdir(save_dir)
+         plt.savefig(save_dir + save_name + '_res.jpg')
+             
         #vis_detections(save_name,im, cls, dets, thresh=CONF_THRESH)
         #im = cv2.imread(save_name)
 def parse_args():
