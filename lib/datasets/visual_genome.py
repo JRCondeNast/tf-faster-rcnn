@@ -1,7 +1,7 @@
 # --------------------------------------------------------
 # Fast/er R-CNN
 # Licensed under The MIT License [see LICENSE for details]
-# Written by Ross Girshick and Xinlei Chen
+# Written by Jiwen Ren
 # --------------------------------------------------------
 from __future__ import absolute_import
 from __future__ import division
@@ -41,9 +41,6 @@ class visual_genome(imdb):
     self._classes = tuple(['__background__'] + [c for c in self.cats])
     self._class_to_ind = dict(list(zip(self.classes, list(range(self.num_classes)))))
     self._image_index = self._load_image_set_index()
-    # Dataset splits that have ground-truth annotations (test splits
-    # do not have gt annotations)
-    self._gt_splits = ('train', 'val')
     # Default to roidb handler
     self.set_proposal_method('gt')
     self.competition_mode(False)
@@ -79,7 +76,7 @@ class visual_genome(imdb):
     Construct an image path from the image's "index" identifier.
     """
     # Example image path for index=119993:
-    #   images/train2014/COCO_train2014_000000119993.jpg
+    #   images/categories_1_train/119993.jpg
     file_name = (str(index) + '.jpg')
     image_path = osp.join(self._data_path, self._data_name, file_name)
     assert osp.exists(image_path), \
@@ -108,15 +105,10 @@ class visual_genome(imdb):
 
   def _load_vg_annotation(self, index):
     """
-    Loads COCO bounding-box instance annotations. Crowd instances are
-    handled by marking their overlaps (with all categories) to -1. This
-    overlap value means that crowd "instances" are excluded from training.
+    Loads visual genome bounding-box instance annotations. 
     """
-    t=time.time()
     object_anno = self._VG.loadImgsAnno(index)
-    #print(time.time()-t)
     height, width = self._VG.getImageWidthHeights(index)
-    #print(time.time()-t)
     objs = object_anno['objects']
     # Sanitize bboxes -- some are invalid
     valid_objs = []
@@ -180,12 +172,6 @@ class visual_genome(imdb):
       self.roidb.append(entry)
     self._image_index = self._image_index * 2
 
-  def _get_box_file(self, index):
-    # first 14 chars / first 22 chars / all chars + .mat
-    # COCO_val2014_0/COCO_val2014_000000447/COCO_val2014_000000447991.mat
-    file_name = ('COCO_' + self._data_name +
-                 '_' + str(index).zfill(12) + '.mat')
-    return osp.join(file_name[:14], file_name[:22], file_name)
 
   def _print_detection_eval_metrics(self, coco_eval):
     IoU_lo_thresh = 0.5

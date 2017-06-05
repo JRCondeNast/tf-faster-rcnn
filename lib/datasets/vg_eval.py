@@ -15,31 +15,9 @@ import glob
 import json
 import cv2
 
-def parse_rec(filename):
-  """ Parse a PASCAL VOC xml file """
-  tree = ET.parse(filename)
-  objects = []
-  for obj in tree.findall('object'):
-    obj_struct = {}
-    obj_struct['name'] = obj.find('name').text
-    obj_struct['pose'] = obj.find('pose').text
-    obj_struct['truncated'] = int(obj.find('truncated').text)
-    obj_struct['difficult'] = int(obj.find('difficult').text)
-    bbox = obj.find('bndbox')
-    obj_struct['bbox'] = [int(bbox.find('xmin').text),
-                          int(bbox.find('ymin').text),
-                          int(bbox.find('xmax').text),
-                          int(bbox.find('ymax').text)]
-    objects.append(obj_struct)
-
-  return objects
-
-
 def vg_ap(rec, prec):
-    """ ap = voc_ap(rec, prec, [use_07_metric])
-    Compute VOC AP given precision and recall.
-    If use_07_metric is true, uses the
-    VOC 07 11 point method (default:False).
+    """ ap = vg_ap(rec, prec)
+    Compute Visual_Genome AP given precision and recall.
     """
     mrec = np.concatenate(([0.], rec, [1.]))
     mpre = np.concatenate(([0.], prec, [0.]))
@@ -71,19 +49,12 @@ def vg_eval(detpath,
   Top level function that does the visual_genome evaluation.
   detpath: Path to detections
       detpath.format(classname) should produce the detection results file.
-  annopath: Path to annotations
-      annopath.format(imagename) should be the xml annotations file.
-  imagesetfile: Text file containing the list of images, one image per line.
+  annopath: Path to annotations files for the Visual Genome dataset(Objects.json)
+  imagesetfile: an directory which contain images for validation.
   classname: Category name (duh)
   cachedir: Directory for caching the annotations
   [ovthresh]: Overlap threshold (default = 0.5)
-  [use_07_metric]: Whether to use VOC07's 11 point AP computation
-      (default False)
   """
-  # assumes detections are in detpath.format(classname)
-  # assumes annotations are in annopath.format(imagename)
-  # assumes imagesetfile is a text file with each line an image name
-  # cachedir caches the annotations in a pickle file
 
   # first load gt
   if not os.path.isdir(cachedir):
@@ -93,7 +64,6 @@ def vg_eval(detpath,
   file_list = glob.glob(imagesetfile + '/*.jpg')
   imagenames_full = [f.rsplit('/', 1)[1] for f in file_list]
   imagenames = [name.split('.jpg')[0] for name in imagenames_full]
-  print(not os.path.isfile(cachefile))
 
   if not os.path.isfile(cachefile):
     # load annots
@@ -102,13 +72,11 @@ def vg_eval(detpath,
         data = json.load(f)
         for anno in data:
             recs_full[str(anno['image_id'])] = anno['objects']
-    print(len(recs_full.keys()))
     recs = {}
     for i, imagename in enumerate(imagenames):
-      try:
-         recs[str(imagename)] = recs_full[str(imagename)]
-      except:
-         print(imagename)
+
+      recs[str(imagename)] = recs_full[str(imagename)]
+
       if i % 100 == 0:
         print('Reading annotation for {:d}/{:d}'.format(
           i + 1, len(imagenames)))
@@ -129,7 +97,6 @@ def vg_eval(detpath,
   npos = 0
   for imagename in imagenames:
     image_path = imagesetfile + '/' + imagename + '.jpg'
-    print(image_path)
     image = cv2.imread(image_path)
     h, w, c = image.shape
     R = []

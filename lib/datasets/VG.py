@@ -1,3 +1,8 @@
+# --------------------------------------------------------
+# Fast/er R-CNN
+# Licensed under The MIT License [see LICENSE for details]
+# Written by Jiwen Ren
+# --------------------------------------------------------
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
@@ -18,14 +23,10 @@ class VG(object):
         self.imageid_anno_dict = self._create_imageid_anno_dict()
 
     def loadCats(self):
-        count = 0
         with open(self.object_annotation_file) as anno_file:
             data = json.load(anno_file)
-            print('Yeah!')
             object_names = defaultdict(lambda: 0)
             for image_id in data:
-                count += 1
-                print(count)
                 for object in image_id['objects']:
                     object_names[object['names'][0]] += 1
         return object_names.keys()
@@ -33,7 +34,6 @@ class VG(object):
     def getImagesIds(self, category):
         with open(self.object_annotation_file) as anno_file:
             data = json.load(anno_file)
-            print('Yeah!')
             image_list = []
             for image_id in data:
                 for object in image_id['objects']:

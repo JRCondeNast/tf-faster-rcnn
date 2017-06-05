@@ -2,17 +2,20 @@
 # Fast R-CNN
 # Copyright (c) 2015 Microsoft
 # Licensed under The MIT License [see LICENSE for details]
-# Written by Ross Girshick
+# Written by Ross Girshick and Jiwen Ren
 # --------------------------------------------------------
 
 """Factory method for easily getting imdbs by name."""
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
+import os
 
 __sets = {}
 from datasets.pascal_voc import pascal_voc
 from datasets.coco import coco
+from datasets.VG import VG
+from datasets.visual_genome import visual_genome
 
 import numpy as np
 
