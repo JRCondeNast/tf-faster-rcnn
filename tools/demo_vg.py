@@ -35,7 +35,7 @@ from nets.vgg16 import vgg16
 from nets.resnet_v1 import resnetv1
 
 CLASSES = ('__background__','sunglasses', 'pants', 'jeans', 'shirt', 'tie', 'suit', 'shoes', 'skirt', 'jacket', 'dress', 'coat', 'shorts')
-NETS = {'res101': ('res101_faster_rcnn_iter_1190000.ckpt',)}
+NETS = {'res101': ('res101_faster_rcnn_iter_110000.ckpt',)}
 DATASETS= {'visual_genome': ('visual_genome_categories_1_train',)}
 
 def vis_detections(im_file,im, class_name, dets, thresh=0.5):
