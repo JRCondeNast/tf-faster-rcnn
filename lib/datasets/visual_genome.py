@@ -262,7 +262,7 @@ class visual_genome(imdb):
       'VG' , self.categories_name,
       'Main')
     if not os.path.exists(dir):
-      os.mkdirs(dir)
+      os.makedirs(dir)
     path = os.path.join(
       self._data_path,
       'results',

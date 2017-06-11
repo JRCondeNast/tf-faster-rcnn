@@ -101,7 +101,9 @@ def vg_eval(detpath,
     h, w, c = image.shape
     R = []
     for obj in recs[imagename]:
-        if obj['names'] == classname:
+        #print(obj['names'])
+        #print('class name is:%s' % classname)
+        if obj['names'][0] == classname:
             res = {}
             width = w
             height = h
@@ -178,6 +180,7 @@ def vg_eval(detpath,
   fp = np.cumsum(fp)
   tp = np.cumsum(tp)
   rec = tp / float(npos)
+  print("npos is %d:" % npos)
   # avoid divide by zero in case the first detection matches a difficult
   # ground truth
   prec = tp / np.maximum(tp + fp, np.finfo(np.float64).eps)

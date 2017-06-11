@@ -47,7 +47,7 @@ class VG(object):
             for image_id in data:
                 for object in image_id['objects']:
                     if object['names'][0] in categories_list:
-                        image_list[object['names'][0]] += [image_id["image_id"]]
+                        image_list[object['names'][0]] += [int(image_id["image_id"])]
 
         return image_list
 
@@ -57,11 +57,11 @@ class VG(object):
         val_cat = []
         for cat in categories_list:
             id = set(image_list[cat])
-            num_train = math.floor(len(id) * percentage)
+            num_train = int(math.floor(len(id) * percentage))
             train_cat = train_cat + random.sample(id, num_train)
             val_cat = val_cat + list((set(id) - set(train_cat)))
         train_val_intersect = list(set(train_cat).intersection(set(val_cat)))
-        train_overlab = random.sample(train_val_intersect, math.floor(0.5 * len(train_val_intersect)))
+        train_overlab = random.sample(train_val_intersect, int(math.floor(0.5 * len(train_val_intersect))))
         val_overlab = set(train_val_intersect) - set(train_overlab)
         train_list = list(set(train_cat) - set(train_val_intersect)) + list(train_overlab)
         val_list = list(set(val_cat) - set(train_val_intersect)) + list(set(val_overlab))
