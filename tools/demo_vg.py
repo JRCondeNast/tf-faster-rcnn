@@ -189,7 +189,7 @@ if __name__ == '__main__':
     else:
         raise NotImplementedError
     net.create_architecture(sess, "TEST", 13,
-                          tag='default', anchor_scales=[2, 4, 8, 16, 32])
+                          tag='default', anchor_scales=[2, 4, 8, 16, 32],anchor_ratios=[0.25,0.5,1,2,4])
     
     #saver = tf.train.import_meta_graph(tfmodel + '.meta')
     #saver.restore(sess, tfmodel)
