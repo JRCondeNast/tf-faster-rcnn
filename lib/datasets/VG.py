@@ -58,9 +58,11 @@ class VG(object):
         for cat in categories_list:
             id = set(image_list[cat])
             num_train = int(math.floor(len(id) * percentage))
+            random.seed(0)
             train_cat = train_cat + random.sample(id, num_train)
             val_cat = val_cat + list((set(id) - set(train_cat)))
         train_val_intersect = list(set(train_cat).intersection(set(val_cat)))
+        random.seed(0)
         train_overlab = random.sample(train_val_intersect, int(math.floor(0.5 * len(train_val_intersect))))
         val_overlab = set(train_val_intersect) - set(train_overlab)
         train_list = list(set(train_cat) - set(train_val_intersect)) + list(train_overlab)
