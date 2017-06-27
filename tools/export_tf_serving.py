@@ -43,12 +43,8 @@ import datasets.classes
 CLASSES = ()
 
 
-NETS = {'vgg16': ('vgg16_faster_rcnn_iter_70000.ckpt',),
-        'res101': ('res101_faster_rcnn_iter_110000.ckpt',
-                   'res101_faster_rcnn_iter_1190000.ckpt',)}
-DATASETS = {'pascal_voc': ('voc_2007_trainval',),
-            'pascal_voc_0712': ('voc_2007_trainval+voc_2012_trainval',),
-            'coco': ('coco_2014_train+coco_2014_valminusminival',)}
+NETS = {'res101': ('res101_faster_rcnn_iter_490000.ckpt',)}
+DATASETS = {'visual_genome': ('visual_genome_categories_1_train',),}
 
 CONF_THRESH = 0.8
 NMS_THRESH = 0.3
@@ -226,6 +222,10 @@ if __name__ == '__main__':
         net.create_architecture(sess, "TEST", 21,
                                 tag='default', anchor_scales=[8, 16, 32],
                                 image=image, im_info=im_info)
+    elif 'visual_genome' in datasets:
+        CLASSES = datasets.classes.visual_genome
+        net.create_architecture(sess, "TEST", 13,
+                                tag='default', anchor_scales=[2, 4, 8, 16, 32])
     else:
         raise NotImplementedError
     saver = tf.train.Saver()
