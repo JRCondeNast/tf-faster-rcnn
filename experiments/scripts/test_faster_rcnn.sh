@@ -36,6 +36,14 @@ case ${DATASET} in
     ANCHORS="[4,8,16,32]"
     RATIOS="[0.5,1,2]"
     ;;
+  visual_genome)
+    TRAIN_IMDB="visual_genome_categories_1_train"
+    TEST_IMDB="visual_genome_categories_1_val"
+    STEPSIZE=350000
+    ITERS=1000
+    ANCHORS="[2,4,8,16,32]"
+    RATIOS="[0.25,0.5,1,2,4]"
+    ;;
   *)
     echo "No dataset given"
     exit
