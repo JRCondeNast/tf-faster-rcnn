@@ -40,8 +40,8 @@ for year in ['2015']:
 #Set up visual_genome_2016<split>
 vg_path = './data/visual_genome'
 vg_instance = VG(vg_path)
-categories_lists = ['categories_1']
-categories_1 = ['sunglasses', 'pants', 'jeans', 'shirt', 'tie', 'suit', 'shoes', 'skirt', 'jacket', 'dress', 'coat', 'shorts']
+categories_lists = ['categories_2']
+categories_2 = ['couch','table','light','chair','picture','lamp','vase','plate','knife','bench','umbrella','spoon','cabinet','curtain','oven','microwave','refrigerator','television','mirror','pillow','cushion']
 for categories in categories_lists:
  for split in ['train','val']:
       train_dir = './data/visual_genome/' + categories + '_train'
