@@ -162,7 +162,7 @@ class resnetv1(Network):
     self._layers['head'] = net_conv4
     with tf.variable_scope(self._resnet_scope, self._resnet_scope):
       # build the anchors for the image
-      self._anchor_component()
+      self._anchor_component_tf()
 
       # rpn
       rpn = slim.conv2d(net_conv4, 512, [3, 3], trainable=is_training, weights_initializer=initializer,
@@ -186,7 +186,7 @@ class resnetv1(Network):
           rois, _ = self._proposal_target_layer(rois, roi_scores, "rpn_rois")
       else:
         if cfg.TEST.MODE == 'nms':
-          rois, _ = self._proposal_layer(rpn_cls_prob, rpn_bbox_pred, "rois")
+          rois, _ = self._proposal_layer_tf(rpn_cls_prob, rpn_bbox_pred, "rois")
         elif cfg.TEST.MODE == 'top':
           rois, _ = self._proposal_top_layer(rpn_cls_prob, rpn_bbox_pred, "rois")
         else:
