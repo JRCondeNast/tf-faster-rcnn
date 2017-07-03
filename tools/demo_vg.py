@@ -35,8 +35,8 @@ from nets.vgg16 import vgg16
 from nets.resnet_v1 import resnetv1
 
 CLASSES = ('__background__','sunglasses', 'pants', 'jeans', 'shirt', 'tie', 'suit', 'shoes', 'skirt', 'jacket', 'dress', 'coat', 'shorts')
-NETS = {'res101': ('res101_faster_rcnn_iter_980000.ckpt',)}
-DATASETS= {'visual_genome': ('visual_genome_categories_1_train',)}
+NETS = {'res101': ('res101_faster_rcnn_iter_490000.ckpt',)}
+DATASETS= {'visual_genome': ('visual_genome_categories_1_train_490000_0.003',)}
 
 def vis_detections(im_file,im, class_name, dets, thresh=0.5):
     """Draw detected bounding boxes."""
@@ -82,7 +82,7 @@ def demo(sess, net, image_name):
     # Load the demo image
     im_file = os.path.join(cfg.DATA_DIR, 'demo', image_name)
     im = cv2.imread(im_file)
-    im = im[:, :, (2, 1, 0)]
+    #im = im[:, :, (2,1,0)]
     # Detect all object classes and regress object bounds
     timer = Timer()
     timer.tic()
@@ -91,9 +91,10 @@ def demo(sess, net, image_name):
     print('Detection took {:.3f}s for {:d} object proposals'.format(timer.total_time, boxes.shape[0]))
 
     # Visualize detections for each class
-    CONF_THRESH = 0.8
+    CONF_THRESH = 0.7
     NMS_THRESH = 0.3
     fig, ax = plt.subplots(figsize=(12, 12))
+    im = im[:, :, (2, 1, 0)]
     for cls_ind, cls in enumerate(CLASSES[1:]):
         cls_ind += 1 # because we skipped background
         cls_boxes = boxes[:, 4*cls_ind:4*(cls_ind + 1)]
@@ -110,7 +111,7 @@ def demo(sess, net, image_name):
         #print(inds)
         if len(inds) == 0:
            continue
-        im = im[:, :, (2, 1, 0)]
+        #im = im[:, :, (2, 1, 0)]
         ax.imshow(im, aspect='equal')
         for i in inds:
           bbox = dets[i, :4]
