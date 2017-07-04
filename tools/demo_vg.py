@@ -82,7 +82,6 @@ def demo(sess, net, image_name):
     # Load the demo image
     im_file = os.path.join(cfg.DATA_DIR, 'demo', image_name)
     im = cv2.imread(im_file)
-    #im = im[:, :, (2,1,0)]
     # Detect all object classes and regress object bounds
     timer = Timer()
     timer.tic()
@@ -191,7 +190,6 @@ if __name__ == '__main__':
         raise NotImplementedError
     net.create_architecture(sess, "TEST", 13,
                           tag='default', anchor_scales=[2, 4, 8, 16, 32],anchor_ratios=[0.25,0.5,1,2,4])
-    
     #saver = tf.train.import_meta_graph(tfmodel + '.meta')
     #saver.restore(sess, tfmodel)
     saver = tf.train.Saver()

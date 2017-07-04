@@ -86,3 +86,6 @@ MS_COCO = ('__background__',
            'teddy bear (indoor)',
            'hair drier (indoor)',
            'toothbrush (indoor)')
+visual_genome = (
+'__background__', 'sunglasses', 'pants', 'jeans', 'shirt', 'tie', 'suit', 'shoes', 'skirt', 'jacket', 'dress', 'coat',
+'shorts')
